@@ -134,6 +134,7 @@ public class TotvsModaHttpClient implements TotvsPedidoPort {
 
     }
 
+    @Override
     public BigDecimal buscarPreco(Integer productCode){
         String json = """
                 {
@@ -166,7 +167,5 @@ public class TotvsModaHttpClient implements TotvsPedidoPort {
         }
 
     }
-
-
 
 }

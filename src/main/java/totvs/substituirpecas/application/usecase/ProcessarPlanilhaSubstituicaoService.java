@@ -11,6 +11,7 @@ import totvs.substituirpecas.infrastructure.spreadsheet.PlanilhaSubstituicaoRead
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -67,10 +68,11 @@ public class ProcessarPlanilhaSubstituicaoService implements PlanilhaSubstituica
 
                     for (Produto produto : produtoList) {
                         if (alvo.getCor().equalsIgnoreCase(produto.colorName()) && alvo.getTamanho().equalsIgnoreCase(produto.size())) {
+                            BigDecimal preco = port.buscarPreco(produto.productCode());
                             itensIncluir.add(new ItemIncluirComand(
                                     produto.productCode(),
                                     item.pendingQuantity(),
-                                    item.originalPrice()
+                                    preco
                             ));
                             itensCancel.add(new ItemCancelamentoCommand(
                                     item.productCode(), item.pendingQuantity()

@@ -5,6 +5,7 @@ import totvs.substituirpecas.application.dto.IncluirItemCommand;
 import totvs.substituirpecas.application.dto.Pedido;
 import totvs.substituirpecas.application.dto.Produto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface TotvsPedidoPort {
@@ -16,5 +17,7 @@ public interface TotvsPedidoPort {
     void inserirItem(IncluirItemCommand data);
 
     void cancelarItem(CancelarItemCommand data);
+
+    BigDecimal buscarPreco(Integer productCode);
 
 }
