@@ -5,21 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-import totvs.substituirpecas.application.dto.CancelarItemCommand;
-import totvs.substituirpecas.application.dto.IncluirItemCommand;
-import totvs.substituirpecas.application.dto.Pedido;
-import totvs.substituirpecas.application.dto.Produto;
+import totvs.substituirpecas.application.dto.*;
 import totvs.substituirpecas.application.port.out.TotvsPedidoPort;
-import totvs.substituirpecas.infrastructure.totvs.dto.pedido.CancelarItemRequest;
-import totvs.substituirpecas.infrastructure.totvs.dto.pedido.GetPedidoResponse;
-import totvs.substituirpecas.infrastructure.totvs.dto.pedido.IncluirItemRequest;
-import totvs.substituirpecas.infrastructure.totvs.dto.pedido.QueueTotvsResponse;
+import totvs.substituirpecas.infrastructure.totvs.dto.pedido.*;
 import totvs.substituirpecas.infrastructure.totvs.dto.preco.PrecoResponse;
 import totvs.substituirpecas.infrastructure.totvs.dto.produto.ProdutoResponse;
-import totvs.substituirpecas.infrastructure.totvs.mapper.CancelarItemRequestMapper;
-import totvs.substituirpecas.infrastructure.totvs.mapper.IncluirItemResquestMapper;
-import totvs.substituirpecas.infrastructure.totvs.mapper.TotvsPedidoMapper;
-import totvs.substituirpecas.infrastructure.totvs.mapper.TotvsProdutoMapper;
+import totvs.substituirpecas.infrastructure.totvs.mapper.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -34,17 +25,23 @@ public class TotvsModaHttpClient implements TotvsPedidoPort {
     private final TotvsProdutoMapper produtoMapper;
     private final IncluirItemResquestMapper resquestMapper;
     private final CancelarItemRequestMapper cancelarItemRequestMapper;
+    private final AdcionarItemMapper adcionarItemMapper;
+    private final PedidoGeralMapper pedidoGeralMapper;
 
     public TotvsModaHttpClient(WebClient webClient,
                                TotvsPedidoMapper mapper,
                                TotvsProdutoMapper produtoMapper,
                                IncluirItemResquestMapper resquestMapper,
-                               CancelarItemRequestMapper cancelarItemRequestMapper) {
+                               CancelarItemRequestMapper cancelarItemRequestMapper,
+                               AdcionarItemMapper adcionarItemMapper,
+                               PedidoGeralMapper pedidoGeralMapper) {
         this.webClient = webClient;
         this.mapper = mapper;
         this.produtoMapper = produtoMapper;
         this.resquestMapper = resquestMapper;
         this.cancelarItemRequestMapper = cancelarItemRequestMapper;
+        this.adcionarItemMapper = adcionarItemMapper;
+        this.pedidoGeralMapper = pedidoGeralMapper;
     }
 
     @Override
@@ -166,6 +163,51 @@ public class TotvsModaHttpClient implements TotvsPedidoPort {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public void adcionarQuantidade(AdcionarCommand data){
+
+        AdcionarRequest request = adcionarItemMapper.toRequest(data);
+        try{
+            webClient.post()
+                    .uri( uriBuilder -> uriBuilder.path("/api/totvsmoda/sales-order/v2/quantity-items")
+                            .build())
+                    .bodyValue(request)
+                    .retrieve()
+                    .bodyToMono(QueueTotvsResponse.class)
+                    .block();
+        } catch (Exception e) {
+            log.info("Erro ao adcionar item ao pedido n°: {}", data.orderCode());
+        }
+    }
+
+    @Override
+    public Pedido buscarPedidoCompleto(Integer pedidoId){
+        String json = """
+                {
+                            "filter": {
+                                "branchCodeList": [2],
+                                "orderCodeList": [%s]
+                            },
+                            "expand": "items"
+                        }
+        """.formatted(pedidoId);
+
+        try {
+         SalesOrderPageResponse response = webClient.post()
+                 .uri(uriBuilder -> uriBuilder.path("/api/totvsmoda/sales-order/v2/orders/search")
+                         .build())
+                 .bodyValue(json)
+                 .retrieve()
+                 .bodyToMono(SalesOrderPageResponse.class)
+                 .block();
+
+
+        return pedidoGeralMapper.toPedido(response);
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

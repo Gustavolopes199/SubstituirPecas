@@ -14,7 +14,7 @@ public class GetPedidoResponse {
 
     private Integer branchCode;
     private Integer orderCode;
-    private Integer orderId;
+    private String orderId;
     private List<Items> items;
 
     @AllArgsConstructor

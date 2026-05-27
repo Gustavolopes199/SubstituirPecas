@@ -14,5 +14,7 @@ public class PlanilhaLinha {
     private String referenciaDestino;
     private String tamanhoOriginal;
     private String corOriginal;
+    private String tamanhoDestino;
+    private String corDestino;
 
 }

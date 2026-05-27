@@ -24,6 +24,8 @@ public class PedidoAgrupado {
         private String referenciaSubstituicao;
         private String tamanho;
         private String cor;
+        private String corDestino;
+        private String tamanhoDestino;
 
     }
 

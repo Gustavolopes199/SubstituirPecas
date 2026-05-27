@@ -26,13 +26,9 @@ public class SubstituicaoPlanilhaController {
 
     @PostMapping("/substituir")
     public ResponseEntity<?> importarPlanilha(@RequestParam("arquivo")MultipartFile file){
-        try {
             useCase.executar(mapper.toCommand(file));
-
             return ResponseEntity.status(HttpStatus.OK).body("Ok");
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        }
+
     }
 
 }

@@ -31,9 +31,11 @@ public class PlanilhaSubstituicaoReader {
             Cell tamanhoOrignal = row.getCell(2);
             Cell corOriginal = row.getCell(3);
             Cell refDestino = row.getCell(4);
+            Cell tamanhoDestino = row.getCell(5);
+            Cell corDestino = row.getCell(6);
 
             if (pedido != null) {
-                object.setPedido((int) pedido.getNumericCellValue());
+                object.setPedido(Integer.parseInt(getCellValueAsString(pedido)));
             }
             if (refOriginal != null) {
                 object.setReferenciaOriginal(getCellValueAsString(refOriginal));
@@ -46,6 +48,12 @@ public class PlanilhaSubstituicaoReader {
             }
             if (corOriginal != null) {
                 object.setCorOriginal(getCellValueAsString(corOriginal));
+            }
+            if (tamanhoDestino != null) {
+                object.setTamanhoDestino(getCellValueAsString(tamanhoDestino));
+            }
+            if (corDestino != null) {
+                object.setCorDestino(getCellValueAsString(corDestino));
             }
             planilhaLinha.add(object);
         }

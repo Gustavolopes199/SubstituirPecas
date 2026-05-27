@@ -1,5 +1,6 @@
 package totvs.substituirpecas.infrastructure.spreadsheet;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 import totvs.substituirpecas.application.dto.PedidoAgrupado;
 import totvs.substituirpecas.application.dto.PlanilhaLinha;
@@ -26,12 +27,7 @@ public class PlanilhaSubstituicaoGroup {
                     List<PedidoAgrupado.ItemSubstituir> items = new ArrayList<>();
 
                     for (PlanilhaLinha linha : entry.getValue()) {
-                        PedidoAgrupado.ItemSubstituir item = new PedidoAgrupado.ItemSubstituir();
-
-                        item.setReferenciaOriginal(linha.getReferenciaOriginal());
-                        item.setTamanho(linha.getTamanhoOriginal());
-                        item.setCor(linha.getCorOriginal());
-                        item.setReferenciaSubstituicao(linha.getReferenciaDestino());
+                        PedidoAgrupado.ItemSubstituir item = getItemSubstituir(linha);
 
                         items.add(item);
                     }
@@ -42,6 +38,18 @@ public class PlanilhaSubstituicaoGroup {
 
                 })
                 .toList();
+    }
+
+    private static PedidoAgrupado.@NonNull ItemSubstituir getItemSubstituir(PlanilhaLinha linha) {
+        PedidoAgrupado.ItemSubstituir item = new PedidoAgrupado.ItemSubstituir();
+
+        item.setReferenciaOriginal(linha.getReferenciaOriginal());
+        item.setTamanho(linha.getTamanhoOriginal());
+        item.setCor(linha.getCorOriginal());
+        item.setReferenciaSubstituicao(linha.getReferenciaDestino());
+        item.setCorDestino(linha.getCorDestino());
+        item.setTamanhoDestino(linha.getTamanhoDestino());
+        return item;
     }
 
 
