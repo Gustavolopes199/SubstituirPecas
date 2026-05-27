@@ -11,7 +11,7 @@ public class PlanilhaUploadMapper {
 
     public PlanilhaSubstituicaoCommand toCommand(MultipartFile file) {
         try {
-            return  new PlanilhaSubstituicaoCommand(file.getOriginalFilename(), file.getInputStream());
+            return new PlanilhaSubstituicaoCommand(file.getOriginalFilename(), file.getInputStream());
         }
         catch (IOException e) {
             throw new RuntimeException(e);

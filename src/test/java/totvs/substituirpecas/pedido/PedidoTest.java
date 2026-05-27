@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import totvs.substituirpecas.infrastructure.totvs.client.TotvsModaHttpClient;
-import totvs.substituirpecas.infrastructure.totvs.dto.CancelarItemRequest;
-import totvs.substituirpecas.infrastructure.totvs.dto.IncluirItemRequest;
+import totvs.substituirpecas.infrastructure.totvs.dto.pedido.CancelarItemRequest;
+import totvs.substituirpecas.infrastructure.totvs.dto.pedido.IncluirItemRequest;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

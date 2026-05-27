@@ -20,4 +20,11 @@ public class ProdutosTest {
         log.info("Buscando produto {}", client.buscarProduto(ref));
     }
 
+    @Test
+    public void buscarPreco(){
+        Integer productCode = 9874;
+
+        log.info("Price: {}", client.buscarPreco(productCode));
+    }
+
 }

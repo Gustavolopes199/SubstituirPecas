@@ -1,4 +1,4 @@
-package totvs.substituirpecas.infrastructure.totvs.dto;
+package totvs.substituirpecas.infrastructure.totvs.dto.produto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

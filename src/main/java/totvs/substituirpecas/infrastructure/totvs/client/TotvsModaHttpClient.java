@@ -10,12 +10,18 @@ import totvs.substituirpecas.application.dto.IncluirItemCommand;
 import totvs.substituirpecas.application.dto.Pedido;
 import totvs.substituirpecas.application.dto.Produto;
 import totvs.substituirpecas.application.port.out.TotvsPedidoPort;
-import totvs.substituirpecas.infrastructure.totvs.dto.*;
+import totvs.substituirpecas.infrastructure.totvs.dto.pedido.CancelarItemRequest;
+import totvs.substituirpecas.infrastructure.totvs.dto.pedido.GetPedidoResponse;
+import totvs.substituirpecas.infrastructure.totvs.dto.pedido.IncluirItemRequest;
+import totvs.substituirpecas.infrastructure.totvs.dto.pedido.QueueTotvsResponse;
+import totvs.substituirpecas.infrastructure.totvs.dto.preco.PrecoResponse;
+import totvs.substituirpecas.infrastructure.totvs.dto.produto.ProdutoResponse;
 import totvs.substituirpecas.infrastructure.totvs.mapper.CancelarItemRequestMapper;
 import totvs.substituirpecas.infrastructure.totvs.mapper.IncluirItemResquestMapper;
 import totvs.substituirpecas.infrastructure.totvs.mapper.TotvsPedidoMapper;
 import totvs.substituirpecas.infrastructure.totvs.mapper.TotvsProdutoMapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -121,6 +127,39 @@ public class TotvsModaHttpClient implements TotvsPedidoPort {
                     .block();
 
             return produtoMapper.toApplication(response);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public BigDecimal buscarPreco(Integer productCode){
+        String json = """
+                {
+                    "filter": {
+                        "productCodeList": ["%s"]
+                    },
+                    "option": {
+                        "prices": [{
+                            "branchCode": 2,
+                            "priceCodeList": [1]
+                        }]
+                    }
+                }
+                """.formatted(productCode);
+
+        try {
+            PrecoResponse response = webClient.post()
+                    .uri(uriBuilder -> uriBuilder.path("/api/totvsmoda/product/v2/prices/search")
+                            .build())
+                    .bodyValue(json)
+                    .retrieve()
+                    .bodyToMono(PrecoResponse.class)
+                    .block();
+            assert response != null;
+
+            return response.items().get(0).prices().get(0).price();
 
         } catch (Exception e) {
             throw new RuntimeException(e);

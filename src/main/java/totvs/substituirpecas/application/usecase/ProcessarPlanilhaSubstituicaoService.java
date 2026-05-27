@@ -8,12 +8,10 @@ import totvs.substituirpecas.application.port.out.TotvsPedidoPort;
 import totvs.substituirpecas.infrastructure.spreadsheet.PlanilhaSubstituicaoCommand;
 import totvs.substituirpecas.infrastructure.spreadsheet.PlanilhaSubstituicaoGroup;
 import totvs.substituirpecas.infrastructure.spreadsheet.PlanilhaSubstituicaoReader;
-import totvs.substituirpecas.infrastructure.totvs.dto.GetPedidoResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -81,7 +79,7 @@ public class ProcessarPlanilhaSubstituicaoService implements PlanilhaSubstituica
                     }
 
                 }
-                if (itensIncluir == null){
+                if (itensIncluir.isEmpty()){
                     continue;
                 }
                 IncluirItemCommand incluirItemCommand = new IncluirItemCommand(pedido.getPedidoId(), itensIncluir);
