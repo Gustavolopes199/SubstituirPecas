@@ -24,7 +24,7 @@ public class PedidoTest {
 
         Long idPedido = 16282L;
 
-        log.info("Pedido Respose: {}", totvsModaHttpClient.buscarPedido(idPedido));
+        //log.info("Pedido Respose: {}", totvsModaHttpClient.buscarPedido(idPedido));
 
     }
 
@@ -68,6 +68,19 @@ public class PedidoTest {
                 "Cancelado para substituicao"
         ));
         request.setItems(items);
+
+    }
+
+    @Test
+    public void buscarSugestaoTest(){
+
+        List<Integer> sugestoes = totvsModaHttpClient.buscarSugestoes(30l);
+
+        if (sugestoes.contains(5158)){
+            log.info("Encontrado: {}", 5158);
+        } else {
+         log.info("Aaaaaaaaaaaaaaa : {}", sugestoes.contains(14235));
+        }
 
     }
 

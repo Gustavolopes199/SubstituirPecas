@@ -2,12 +2,11 @@ package totvs.substituirpecas.infrastructure.spreadsheet;
 
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
-import totvs.substituirpecas.application.dto.PedidoAgrupado;
-import totvs.substituirpecas.application.dto.PlanilhaLinha;
+import totvs.substituirpecas.application.dto.transport.PedidoAgrupado;
+import totvs.substituirpecas.application.dto.transport.PlanilhaLinha;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component

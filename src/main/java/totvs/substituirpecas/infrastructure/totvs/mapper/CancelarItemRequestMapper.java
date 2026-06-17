@@ -2,7 +2,7 @@ package totvs.substituirpecas.infrastructure.totvs.mapper;
 
 
 import org.springframework.stereotype.Component;
-import totvs.substituirpecas.application.dto.CancelarItemCommand;
+import totvs.substituirpecas.application.dto.commands.CancelarItemCommand;
 import totvs.substituirpecas.infrastructure.totvs.dto.pedido.CancelarItemRequest;
 
 @Component

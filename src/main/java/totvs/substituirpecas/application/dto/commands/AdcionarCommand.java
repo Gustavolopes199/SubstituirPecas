@@ -1,4 +1,4 @@
-package totvs.substituirpecas.application.dto;
+package totvs.substituirpecas.application.dto.commands;
 
 import java.util.List;
 

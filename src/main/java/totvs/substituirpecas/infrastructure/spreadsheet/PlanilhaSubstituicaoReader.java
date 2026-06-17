@@ -2,7 +2,7 @@ package totvs.substituirpecas.infrastructure.spreadsheet;
 
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Component;
-import totvs.substituirpecas.application.dto.PlanilhaLinha;
+import totvs.substituirpecas.application.dto.transport.PlanilhaLinha;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,9 +30,11 @@ public class PlanilhaSubstituicaoReader {
             Cell refOriginal =  row.getCell(1);
             Cell tamanhoOrignal = row.getCell(2);
             Cell corOriginal = row.getCell(3);
-            Cell refDestino = row.getCell(4);
-            Cell tamanhoDestino = row.getCell(5);
-            Cell corDestino = row.getCell(6);
+            Cell quantidade = row.getCell(4);
+            Cell refDestino = row.getCell(5);
+            Cell tamanhoDestino = row.getCell(6);
+            Cell corDestino = row.getCell(7);
+            Cell quantidadeDestino = row.getCell(8);
 
             if (pedido != null) {
                 object.setPedido(Integer.parseInt(getCellValueAsString(pedido)));
@@ -46,6 +48,9 @@ public class PlanilhaSubstituicaoReader {
             if (tamanhoOrignal != null) {
                 object.setTamanhoOriginal(getCellValueAsString(tamanhoOrignal));
             }
+            if (quantidade != null) {
+                object.setQuantidade(Integer.parseInt(getCellValueAsString(quantidade)));
+            }
             if (corOriginal != null) {
                 object.setCorOriginal(getCellValueAsString(corOriginal));
             }
@@ -54,6 +59,9 @@ public class PlanilhaSubstituicaoReader {
             }
             if (corDestino != null) {
                 object.setCorDestino(getCellValueAsString(corDestino));
+            }
+            if (quantidadeDestino != null) {
+                object.setQuantidadeDestino(Integer.parseInt(getCellValueAsString(quantidadeDestino)));
             }
             planilhaLinha.add(object);
         }

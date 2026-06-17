@@ -1,7 +1,7 @@
 package totvs.substituirpecas.infrastructure.totvs.mapper;
 
 import org.springframework.stereotype.Component;
-import totvs.substituirpecas.application.dto.Produto;
+import totvs.substituirpecas.application.dto.transport.Produto;
 import totvs.substituirpecas.infrastructure.totvs.dto.produto.ProdutoResponse;
 
 import java.util.List;

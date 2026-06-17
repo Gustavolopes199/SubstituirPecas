@@ -1,9 +1,10 @@
-package totvs.substituirpecas.infrastructure.persistence.repository;
+package totvs.substituirpecas.infrastructure.persistence.adapter;
 
 import org.springframework.stereotype.Component;
-import totvs.substituirpecas.application.dto.SalvarLogCommand;
+import totvs.substituirpecas.application.dto.transport.SalvarLogCommand;
 import totvs.substituirpecas.application.port.out.SubstituicaoLogRepositoryPort;
 import totvs.substituirpecas.infrastructure.persistence.mapper.SubstituicaoLogMapper;
+import totvs.substituirpecas.infrastructure.persistence.repository.SubstituicaoLogRepository;
 
 @Component
 public class SubstituicaoLogRepositoryAdapter implements SubstituicaoLogRepositoryPort {

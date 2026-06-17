@@ -1,8 +1,8 @@
 package totvs.substituirpecas.infrastructure.totvs.mapper;
 
 import org.springframework.stereotype.Component;
-import totvs.substituirpecas.application.dto.ItemPedido;
-import totvs.substituirpecas.application.dto.Pedido;
+import totvs.substituirpecas.application.dto.transport.ItemPedido;
+import totvs.substituirpecas.application.dto.transport.Pedido;
 import totvs.substituirpecas.infrastructure.totvs.dto.pedido.SalesOrderPageResponse;
 
 import java.math.BigDecimal;
@@ -16,6 +16,8 @@ public class PedidoGeralMapper {
         return new Pedido(
                 order.orderCode(),
                 order.branchCode(),
+                order.customerName(),
+                order.customerCpfCnpj(),
                 order.items().stream()
                         .map( r -> new ItemPedido(
                                 r.quantity(),
@@ -32,7 +34,9 @@ public class PedidoGeralMapper {
                                 r.productSku(),
                                 r.colorCode(),
                                 r.colorName(),
-                                r.sizeName()
+                                r.sizeName(),
+                                r.canceledQuantity(),
+                                r.lastChangeDate()
                         ))
                         .toList()
         );

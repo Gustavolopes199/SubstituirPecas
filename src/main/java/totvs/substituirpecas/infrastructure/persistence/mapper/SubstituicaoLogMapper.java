@@ -1,6 +1,6 @@
 package totvs.substituirpecas.infrastructure.persistence.mapper;
 
-import totvs.substituirpecas.application.dto.SalvarLogCommand;
+import totvs.substituirpecas.application.dto.transport.SalvarLogCommand;
 import totvs.substituirpecas.infrastructure.persistence.entity.SubstituicaoLogEntity;
 
 public final class SubstituicaoLogMapper {

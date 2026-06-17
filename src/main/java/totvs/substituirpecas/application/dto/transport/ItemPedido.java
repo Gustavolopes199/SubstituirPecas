@@ -1,6 +1,7 @@
-package totvs.substituirpecas.application.dto;
+package totvs.substituirpecas.application.dto.transport;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public record ItemPedido(
         Integer quantity,
@@ -17,6 +18,8 @@ public record ItemPedido(
         String productSku,
         String colorCode,
         String colorName,
-        String sizeName
+        String sizeName,
+        Integer quantidadeCancelada,
+        LocalDateTime lastChangeDate
 ) {
 }

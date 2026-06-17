@@ -5,14 +5,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-import totvs.substituirpecas.application.dto.*;
+import totvs.substituirpecas.application.dto.commands.AdcionarCommand;
+import totvs.substituirpecas.application.dto.commands.CancelarItemCommand;
+import totvs.substituirpecas.application.dto.commands.IncluirItemCommand;
+import totvs.substituirpecas.application.dto.transport.Pedido;
+import totvs.substituirpecas.application.dto.transport.Produto;
 import totvs.substituirpecas.application.port.out.TotvsPedidoPort;
 import totvs.substituirpecas.infrastructure.totvs.dto.pedido.*;
 import totvs.substituirpecas.infrastructure.totvs.dto.preco.PrecoResponse;
 import totvs.substituirpecas.infrastructure.totvs.dto.produto.ProdutoResponse;
+import totvs.substituirpecas.infrastructure.totvs.dto.sugestao.SuggestionPageResponse;
 import totvs.substituirpecas.infrastructure.totvs.mapper.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -27,6 +33,7 @@ public class TotvsModaHttpClient implements TotvsPedidoPort {
     private final CancelarItemRequestMapper cancelarItemRequestMapper;
     private final AdcionarItemMapper adcionarItemMapper;
     private final PedidoGeralMapper pedidoGeralMapper;
+    private final SugestionMapper sugestionMapper;
 
     public TotvsModaHttpClient(WebClient webClient,
                                TotvsPedidoMapper mapper,
@@ -34,7 +41,8 @@ public class TotvsModaHttpClient implements TotvsPedidoPort {
                                IncluirItemResquestMapper resquestMapper,
                                CancelarItemRequestMapper cancelarItemRequestMapper,
                                AdcionarItemMapper adcionarItemMapper,
-                               PedidoGeralMapper pedidoGeralMapper) {
+                               PedidoGeralMapper pedidoGeralMapper,
+                               SugestionMapper sugestionMapper) {
         this.webClient = webClient;
         this.mapper = mapper;
         this.produtoMapper = produtoMapper;
@@ -42,10 +50,11 @@ public class TotvsModaHttpClient implements TotvsPedidoPort {
         this.cancelarItemRequestMapper = cancelarItemRequestMapper;
         this.adcionarItemMapper = adcionarItemMapper;
         this.pedidoGeralMapper = pedidoGeralMapper;
+        this.sugestionMapper = sugestionMapper;
     }
 
     @Override
-    public Pedido buscarPedido(Long pedido){
+    public Pedido buscarPedido(Integer pedido){
         try {
             GetPedidoResponse response = webClient.get()
                     .uri(uriBuilder -> uriBuilder.path("/api/totvsmoda/sales-order/v2/pending-items")
@@ -207,6 +216,31 @@ public class TotvsModaHttpClient implements TotvsPedidoPort {
 
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Integer> buscarSugestoes(Long dias){
+
+        try {
+        SuggestionPageResponse response = webClient.get()
+                .uri(uriBuilder ->
+                        uriBuilder.queryParam("StartChangeDate", LocalDateTime.now().minusDays(dias))
+                                .queryParam("EndChangeDate", LocalDateTime.now())
+                                .queryParam("SuggestionStatusList", List.of(1))
+                                .path("/api/totvsmoda/sales-order/v2/billing-suggestions")
+                                .build())
+                .retrieve()
+                .bodyToMono(SuggestionPageResponse.class)
+                .block();
+
+        assert response != null;
+
+        return sugestionMapper.toListPedidos(
+                response
+        ); }
+        catch (WebClientResponseException e){
+           throw new RuntimeException("Sem nada");
         }
     }
 
